@@ -219,3 +219,24 @@ UI helper (ESM):
 ```
 
 That’s it — keep it simple, keep it tactical. When you’re ready to publish, switch import paths to `@haz/trae-memory-kit/dist/*` and use `npx trae-bootstrap` in your scripts.
+## Portable launchers cheat sheet
+
+PowerShell:
+`powershell
+C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe = 'C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe'
+./run-kit.ps1 fuse -ProjectDir 'C:\Users\Haz\Documents\GitHub\Bremen shop' -OutputDir '.\\.trae\\shared'
+./run-kit.ps1 bootstrap -Agent 'ump45' -MemoryDir 'C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory'
+./run-kit.ps1 bootstrap:rp -Agent 'shop' -MemoryDir 'C:\Users\Haz\Documents\GitHub\Bremen shop\apps\shop\trae_memory'
+./run-kit.ps1 append -MemoryDir 'C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory'
+`
+
+CMD/Batch:
+`at
+set TRAE_NODE_EXE=C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe
+run-kit.cmd fuse --projectdir "C:\Users\Haz\Documents\GitHub\Bremen shop" --output-dir ".\\.trae\\shared"
+run-kit.cmd bootstrap --agent ump45 --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory"
+run-kit.cmd bootstrap:rp --agent shop --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\shop\trae_memory"
+run-kit.cmd append --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory"
+`
+
+Node resolution order: TRAE_NODE_EXE > portable Node in repo > system PATH.
