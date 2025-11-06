@@ -1,0 +1,17 @@
+{
+  "name": "trae-memory-kit-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Portable Tier-2 agent memory utilities and bootstrap CLI (JS MVP)",
+  "bin": {
+    "trae-bootstrap": "bin/trae-bootstrap.js"
+  },
+  "scripts": {
+    "bootstrap": "node bin/trae-bootstrap.js"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}
