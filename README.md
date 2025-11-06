@@ -70,8 +70,10 @@ Notes:
 ## Portable launchers (Windows)
 
 The kit ships with two universal launchers so you dont need npm scripts or PATH gymnastics:
-- PowerShell: un-kit.ps1
-- CMD/Batch:  un-kit.cmd
+- PowerShell: 
+un-kit.ps1
+- CMD/Batch:  
+un-kit.cmd
 
 Actions supported:
 - use  generate fusion files (highlights, ledger, index) from a target repo
@@ -104,25 +106,9 @@ C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe = 'C:\U
 ./run-kit.ps1 append -MemoryDir 'C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory'
 `
 
-### CMD/Batch examples
 
-`at
-:: Optional: force a specific Node.exe (portable)
-set TRAE_NODE_EXE=C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe
-
-:: Generate fusion into the shops shared dir
-run-kit.cmd fuse --projectdir "C:\Users\Haz\Documents\GitHub\Bremen shop" --output-dir ".\\.trae\\shared"
-
-:: Bootstrap UMP45 agent memory
-run-kit.cmd bootstrap --agent ump45 --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory"
-
-:: Relational bootstrap (shop overlays)
-run-kit.cmd bootstrap:rp --agent shop --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\shop\trae_memory"
-
-:: Append fusion into existing bootstrap
-run-kit.cmd append --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory"
-`
 
 Notes:
 - Success output is intentionally minimal. Check the target memory directory for ootstrap.txt or the shared dir for fusion files.
 - If a launcher cant find Node, set TRAE_NODE_EXE explicitly as shown above.
+
