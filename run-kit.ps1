@@ -3,7 +3,8 @@ param(
   [string]$Agent,
   [string]$MemoryDir,
   [string]$Out,
-  [string]$OutputDir
+  [string]$OutputDir,
+  [string]$ProjectDir
 )
 
 function Resolve-NodeExe {
@@ -19,10 +20,16 @@ $node = Resolve-NodeExe
 
 switch ($Action) {
   'fuse' {
-    $script = Join-Path $PSScriptRoot 'scripts\memory_fusion.js'
+    $script = Join-Path $PSScriptRoot 'scripts\memory_fusion.cjs'
     $args = @()
     if ($OutputDir) { $args += @('--output-dir', $OutputDir) }
-    & $node $script @args
+    $restore = Get-Location
+    try {
+      if ($ProjectDir -and (Test-Path $ProjectDir)) { Push-Location $ProjectDir }
+      & $node $script @args
+    } finally {
+      Set-Location $restore
+    }
     break
   }
   'bootstrap' {
@@ -44,7 +51,7 @@ switch ($Action) {
     break
   }
   'append' {
-    $script = Join-Path $PSScriptRoot 'scripts\append_fusion.js'
+    $script = Join-Path $PSScriptRoot 'scripts\append_fusion.cjs'
     $args = @()
     if ($MemoryDir) { $args += @('--memory-dir', $MemoryDir) }
     & $node $script @args
@@ -54,10 +61,9 @@ switch ($Action) {
     Write-Host 'Usage: .\run-kit.ps1 <action> [options]'
     Write-Host 'Actions: fuse, bootstrap, bootstrap:rp, append'
     Write-Host 'Examples:'
-    Write-Host '.\run-kit.ps1 fuse -OutputDir .\\.trae\\shared'
+    Write-Host '.\run-kit.ps1 fuse -ProjectDir C:\\path\\to\\project -OutputDir .\\.trae\\shared'
     Write-Host '.\run-kit.ps1 bootstrap -Agent ump45 -MemoryDir C:\\path\\apps\\ump45\\trae_memory'
     Write-Host '.\run-kit.ps1 bootstrap:rp -Agent shop -MemoryDir C:\\path\\apps\\shop\\trae_memory'
     Write-Host '.\run-kit.ps1 append -MemoryDir C:\\path\\apps\\ump45\\trae_memory'
   }
 }
-
