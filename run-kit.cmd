@@ -25,3 +25,4 @@ echo run-kit.cmd bootstrap --agent ump45 --memory-dir C:\path\apps\ump45\trae_me
 echo run-kit.cmd bootstrap:rp --agent shop --memory-dir C:\path\apps\shop\trae_memory
 echo run-kit.cmd append --memory-dir C:\path\apps\ump45\trae_memory
 
+

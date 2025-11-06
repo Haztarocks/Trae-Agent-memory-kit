@@ -1,6 +1,6 @@
 # Trae Memory Kit — Usage Guide
 
-Portable Tier-2 agent memory utilities and a bootstrap CLI, designed for Bremen Shop / UMP45. ESM-first, TypeScript-ready, with optional Express and a tiny UI helper.
+Portable Tier-2 agent memory utilities and a bootstrap CLI. ESM-first, TypeScript-ready, with optional Express and a tiny UI helper.
 
 Contents
 - Install (GitHub Packages or local repo)
@@ -30,9 +30,9 @@ npm install
 ```
 
 Local repo (pre-publish):
-- Import directly from this monorepo path, e.g. `./packages/trae-memory-kit/src/*` for JS or build TS to `dist/`.
+- Import directly from this repo path, e.g. `./packages/trae-memory-kit/src/*` for JS or build TS to `dist/`.
 
-Node version: use Node 18+ (we use ESM). The repo includes a portable Node v20 if you need a local runtime.
+Node version: use Node 18+ (ESM).
 
 ## CLI usage — `trae-bootstrap`
 
@@ -40,8 +40,8 @@ Generates bootstrap text files to prime session continuity.
 
 After publish:
 ```
-npx trae-bootstrap --agent ump45
-npx trae-bootstrap --agent ump45 --relational
+npx trae-bootstrap --agent <AGENT_NAME>
+npx trae-bootstrap --agent <AGENT_NAME> --relational
 ```
 
 Flags:
@@ -56,8 +56,8 @@ Outputs:
 
 Pre-publish (local JS):
 ```
-node packages/trae-memory-kit/bin/trae-bootstrap.js --agent ump45
-node packages/trae-memory-kit/bin/trae-bootstrap.js --agent ump45 --relational
+node packages/trae-memory-kit/bin/trae-bootstrap.js --agent <AGENT_NAME>
+node packages/trae-memory-kit/bin/trae-bootstrap.js --agent <AGENT_NAME> --relational
 ```
 
 ### Manual drop-in quickstart (any repo)
@@ -72,29 +72,29 @@ You can run the kit without installing from a registry by copying the folder int
 Windows examples:
 ```
 :: Standard bootstrap
-node .\packages\trae-memory-kit\bin\trae-bootstrap.js --agent ump45-pro --memory-dir ".\.trae\memory\ump45-pro"
+node .\packages\trae-memory-kit\bin\trae-bootstrap.js --agent <AGENT_NAME> --memory-dir ".\.trae\memory\<AGENT_NAME>"
 
 :: Relational bootstrap
-node .\packages\trae-memory-kit\bin\trae-bootstrap.js --agent ump45-pro --memory-dir ".\.trae\memory\ump45-pro" --relational
+node .\packages\trae-memory-kit\bin\trae-bootstrap.js --agent <AGENT_NAME> --memory-dir ".\.trae\memory\<AGENT_NAME>" --relational
 
 :: Using portable node
-.\node-v20.10.0-win-x64\node.exe .\packages\trae-memory-kit\bin\trae-bootstrap.js --agent ump45-pro --memory-dir ".\.trae\memory\ump45-pro" --relational
+.\node-v20.10.0-win-x64\node.exe .\packages\trae-memory-kit\bin\trae-bootstrap.js --agent <AGENT_NAME> --memory-dir ".\.trae\memory\<AGENT_NAME>" --relational
 ```
 
 macOS/Linux examples:
 ```
 # Standard bootstrap
-node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent ump45-pro --memory-dir "./.trae/memory/ump45-pro"
+node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent <AGENT_NAME> --memory-dir "./.trae/memory/<AGENT_NAME>"
 
 # Relational bootstrap
-node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent ump45-pro --memory-dir "./.trae/memory/ump45-pro" --relational
+node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent <AGENT_NAME> --memory-dir "./.trae/memory/<AGENT_NAME>" --relational
 ```
 
 Optional package.json scripts in the target repo:
 ```
 "scripts": {
-  "bootstrap:agent": "node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent ump45-pro --memory-dir ./.trae/memory/ump45-pro",
-  "bootstrap:agent:rp": "node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent ump45-pro --memory-dir ./.trae/memory/ump45-pro --relational"
+  "bootstrap:agent": "node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent <AGENT_NAME> --memory-dir ./.trae/memory/<AGENT_NAME>",
+  "bootstrap:agent:rp": "node ./packages/trae-memory-kit/bin/trae-bootstrap.js --agent <AGENT_NAME> --memory-dir ./.trae/memory/<AGENT_NAME> --relational"
 }
 ```
 
@@ -128,7 +128,7 @@ import { resolveMemoryDir } from './packages/trae-memory-kit/src/pathResolver.js
 import { ensureDefaults, appendHighlight, appendNextAction } from './packages/trae-memory-kit/src/memoryOps.js';
 import { generateBootstrap, generateBootstrapRP } from './packages/trae-memory-kit/src/bootstrap.js';
 
-const agent = 'ump45';
+const agent = '<AGENT_NAME>';
 const memoryDir = resolveMemoryDir({ agent });
 ensureDefaults(memoryDir);
 
@@ -202,7 +202,7 @@ import { createTraeMemoryRoutes } from './packages/trae-memory-kit/src/express/m
 
 const app = express();
 app.use(express.json());
-app.use(createTraeMemoryRoutes(express, { agent: 'ump45' }));
+app.use(createTraeMemoryRoutes(express, { agent: '<AGENT_NAME>' }));
 app.listen(3000);
 ```
 
@@ -219,24 +219,43 @@ UI helper (ESM):
 ```
 
 That’s it — keep it simple, keep it tactical. When you’re ready to publish, switch import paths to `@haz/trae-memory-kit/dist/*` and use `npx trae-bootstrap` in your scripts.
+
 ## Portable launchers cheat sheet
 
 PowerShell:
-`powershell
-C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe = 'C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe'
-./run-kit.ps1 fuse -ProjectDir 'C:\Users\Haz\Documents\GitHub\Bremen shop' -OutputDir '.\\.trae\\shared'
-./run-kit.ps1 bootstrap -Agent 'ump45' -MemoryDir 'C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory'
-./run-kit.ps1 bootstrap:rp -Agent 'shop' -MemoryDir 'C:\Users\Haz\Documents\GitHub\Bremen shop\apps\shop\trae_memory'
-./run-kit.ps1 append -MemoryDir 'C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory'
-`
+```
+# Optional: force a specific Node.exe (portable)
+$env:TRAE_NODE_EXE = "<PROJECT_DIR>\node-v20.10.0-win-x64\node.exe"
+
+# Generate fusion into the repo’s shared dir
+./run-kit.ps1 fuse -ProjectDir '<PROJECT_DIR>' -OutputDir '.\.trae\shared'
+
+# Bootstrap an agent memory (fallback path)
+./run-kit.ps1 bootstrap -Agent '<AGENT_NAME>' -MemoryDir '.\.trae\memory\<AGENT_NAME>'
+
+# Relational bootstrap (roleplay overlay)
+./run-kit.ps1 bootstrap:rp -Agent '<AGENT_NAME>' -MemoryDir '.\.trae\memory\<AGENT_NAME>'
+
+# Append fusion into existing bootstrap
+./run-kit.ps1 append -MemoryDir '.\.trae\memory\<AGENT_NAME>'
+```
 
 CMD/Batch:
-`at
-set TRAE_NODE_EXE=C:\Users\Haz\Documents\GitHub\Bremen shop\node-v20.10.0-win-x64\node.exe
-run-kit.cmd fuse --projectdir "C:\Users\Haz\Documents\GitHub\Bremen shop" --output-dir ".\\.trae\\shared"
-run-kit.cmd bootstrap --agent ump45 --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory"
-run-kit.cmd bootstrap:rp --agent shop --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\shop\trae_memory"
-run-kit.cmd append --memory-dir "C:\Users\Haz\Documents\GitHub\Bremen shop\apps\ump45\trae_memory"
-`
+```
+:: Optional: force a specific Node.exe (portable)
+set TRAE_NODE_EXE=<PROJECT_DIR>\node-v20.10.0-win-x64\node.exe
 
-Node resolution order: TRAE_NODE_EXE > portable Node in repo > system PATH.
+:: Generate fusion into the repo’s shared dir
+run-kit.cmd fuse --projectdir "<PROJECT_DIR>" --output-dir ".\.trae\shared"
+
+:: Bootstrap an agent memory (fallback path)
+run-kit.cmd bootstrap --agent <AGENT_NAME> --memory-dir ".\.trae\memory\<AGENT_NAME>"
+
+:: Relational bootstrap (roleplay overlay)
+run-kit.cmd bootstrap:rp --agent <AGENT_NAME> --memory-dir ".\.trae\memory\<AGENT_NAME>"
+
+:: Append fusion into existing bootstrap
+run-kit.cmd append --memory-dir ".\.trae\memory\<AGENT_NAME>"
+```
+
+Node resolution order: `TRAE_NODE_EXE` > portable Node in repo > system PATH.
